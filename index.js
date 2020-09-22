@@ -9,7 +9,7 @@ function ajaxPost(){
   var formData = {
     username: $('#user-github').val(),
     email: $('#passcode').val(),
-    terms: $('#terms').val()
+    terms: $('#terms').is(':checked')
   }
  console.log(formData)
 
@@ -20,7 +20,15 @@ function ajaxPost(){
     data: JSON.stringify(formData),
     dataType: 'json',
     success: function(users) {
-      $("#registeredUsers").html("<tr>" + "<td>" + users.user  + "</td>" + "<td>" + users.email + "</td></tr>");
+      let content = ``;
+      for(let i = 0; i < users.length; i++) {
+        const user = users[i];
+
+        let row = "<tr>" + "<td>" + user.username  + "</td>" + "<td>" + user.email + "</td></tr>";
+        content += row;
+      }
+
+      $("#registeredUsers").html(content);
       $("#form").hide();
       $("#table").removeClass("hidden");
     },

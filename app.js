@@ -23,24 +23,20 @@ app.use(bodyParser.json());
 var schema = mongoose.Schema({
   username: String,
   email: String,
-  terms: String
+  terms: Boolean
 });
 
 var User = mongoose.model('User', schema);
 
 app.post('/registration', async (req, res) => {
+  const user = await User.create({
+    username: req.body.username,
+    email: req.body.email,
+    terms: req.body.terms
+  });
+  let users = await User.find({});
 
-    const user = await User.create({
-      username: req.body.username,
-      email: req.body.email,
-      terms: req.body.terms
-    });
-
-let users = await User.find({});
-
-//res.json([users]);
-res.send({ user: user.username, email: user.email, terms: user.terms});
-
+  res.json(users);
 });
 
 app.listen(3000, () => console.log('Listening on port 3000!'));
